@@ -1,8 +1,18 @@
 package com.hahogames.adventure;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Simple text adventure game.
@@ -11,7 +21,7 @@ import java.util.Scanner;
  * @author harry
  */
 public class Game {
-	private List<Place> places = new ArrayList<>();
+	private Map<String, Place> places = new HashMap<>();
 	private List<Path> paths = new ArrayList<>();
 
 	public static void main(String[] args) {
@@ -23,7 +33,7 @@ public class Game {
 	}
 
 	private void play() {
-		Place current = places.get(0);
+		Place current = places.get("A");
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.println(current.description);
@@ -38,18 +48,40 @@ public class Game {
 	}
 
 	private void setup() {
-		// Places
-		Place kitchen = new Place("You are in a kitchen.");
-		places.add(kitchen);
-		Place attic = new Place("It is very dark up here.");
-		places.add(attic);
-		Place garden = new Place("You are outside in a nice garden.");
-		places.add(garden);
-		// Paths
-		paths.add(new Path(kitchen, attic, "There is a rickety ladder going up."));
-		paths.add(new Path(attic, kitchen, "There is a ladder but it doesn't look safe!"));
-		paths.add(new Path(kitchen, garden, "There is a wooden door heading outside."));
-		paths.add(new Path(garden, kitchen, "A white door looks like it leads inside."));
+		try {
+			InputStream is = getClass().getClassLoader().getResourceAsStream("places.xml");
+			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+			NodeList newPlaces = doc.getElementsByTagName("place");
+			for (int i = 0; i < newPlaces.getLength(); i++) {
+				Node n = newPlaces.item(i);
+				if (n.getNodeType() == Node.ELEMENT_NODE) {
+					Element e = (Element) n;
+					String ref = e.getElementsByTagName("reference").item(0).getTextContent();
+					String description = e.getElementsByTagName("description").item(0).getTextContent();
+					places.put(ref, new Place(description));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			InputStream is = getClass().getClassLoader().getResourceAsStream("paths.xml");
+			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+			NodeList newPaths = doc.getElementsByTagName("path");
+			for (int i = 0; i < newPaths.getLength(); i++) {
+				Node n = newPaths.item(i);
+				if (n.getNodeType() == Node.ELEMENT_NODE) {
+					Element e = (Element) n;
+					String from = e.getElementsByTagName("from").item(0).getTextContent();
+					String to = e.getElementsByTagName("to").item(0).getTextContent();
+					String description = e.getElementsByTagName("description").item(0).getTextContent();
+					paths.add(new Path(places.get(from), places.get(to), description));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return;
 	}
 }

@@ -1,0 +1,22 @@
+<paths>
+  <path>
+    <from>A</from>
+    <to>B</to>
+    <description>There is a rickety ladder going up.</description>
+  </path>
+  <path>
+    <from>B</from>
+    <to>A</to>
+    <description>There is a ladder but it doesn&apos;t look safe!</description>
+  </path>
+  <path>
+    <from>A</from>
+    <to>C</to>
+    <description>There is a wooden door heading outside.</description>
+  </path>
+  <path>
+    <from>C</from>
+    <to>A</to>
+    <description>A white door looks like it leads inside.</description>
+  </path>
+</paths>

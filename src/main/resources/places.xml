@@ -1,0 +1,14 @@
+<places>
+  <place>
+    <reference>A</reference>
+    <description>You are in a kitchen.</description>
+  </place>
+  <place>
+    <reference>B</reference>
+    <description>It is very dark up here.</description>
+  </place>
+  <place>
+    <reference>C</reference>
+    <description>You are outside in a nice garden.</description>
+  </place>
+</places>
