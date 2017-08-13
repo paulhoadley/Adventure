@@ -1,5 +1,7 @@
 package com.hahogames.adventure;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -9,16 +11,19 @@ import java.util.Scanner;
  * @author harry
  */
 public class Game {
+	private List<Place> places = new ArrayList<>();
+	private List<Path> paths = new ArrayList<>();
+
 	public static void main(String[] args) {
 		System.out.println("Starting up!");
 		Game game = new Game();
-		Place start = game.setup();
-		game.play(start);
+		game.setup();
+		game.play();
 		return;
 	}
 
-	private void play(Place start) {
-		Place current = start;
+	private void play() {
+		Place current = places.get(0);
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.println(current.description);
@@ -32,16 +37,19 @@ public class Game {
 		}
 	}
 
-	private Place setup() {
+	private void setup() {
+		// Places
 		Place kitchen = new Place("You are in a kitchen.");
+		places.add(kitchen);
 		Place attic = new Place("It is very dark up here.");
+		places.add(attic);
 		Place garden = new Place("You are outside in a nice garden.");
-
-		Path ladderUp = new Path(kitchen, attic, "There is a rickety ladder going up.");
-		Path ladderDown = new Path(attic, kitchen, "There is a ladder but it doesn't look safe!");
-		Path doorOut = new Path(kitchen, garden, "There is a wooden door heading outside.");
-		Path doorIn = new Path(garden, kitchen, "A white door looks like it leads inside.");
-		
-		return kitchen;
+		places.add(garden);
+		// Paths
+		paths.add(new Path(kitchen, attic, "There is a rickety ladder going up."));
+		paths.add(new Path(attic, kitchen, "There is a ladder but it doesn't look safe!"));
+		paths.add(new Path(kitchen, garden, "There is a wooden door heading outside."));
+		paths.add(new Path(garden, kitchen, "A white door looks like it leads inside."));
+		return;
 	}
 }
