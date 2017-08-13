@@ -23,9 +23,10 @@ import org.w3c.dom.NodeList;
 public class Game {
 	private Map<String, Place> places = new HashMap<>();
 	private List<Path> paths = new ArrayList<>();
+	private String title;
+	private String start;
 
 	public static void main(String[] args) {
-		System.out.println("Starting up!");
 		Game game = new Game();
 		game.setup();
 		game.play();
@@ -33,7 +34,8 @@ public class Game {
 	}
 
 	private void play() {
-		Place current = places.get("A");
+		System.out.println("Welcom to " + title + "!");
+		Place current = places.get(start);
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.println(current.description);
@@ -49,8 +51,14 @@ public class Game {
 
 	private void setup() {
 		try {
-			InputStream is = getClass().getClassLoader().getResourceAsStream("places.xml");
+			InputStream is = getClass().getClassLoader().getResourceAsStream("game.xml");
 			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+
+			NodeList newTitle = doc.getElementsByTagName("title");
+			title = newTitle.item(0).getTextContent();
+			NodeList newStart = doc.getElementsByTagName("start");
+			start = newStart.item(0).getTextContent();
+
 			NodeList newPlaces = doc.getElementsByTagName("place");
 			for (int i = 0; i < newPlaces.getLength(); i++) {
 				Node n = newPlaces.item(i);
@@ -61,13 +69,7 @@ public class Game {
 					places.put(ref, new Place(description));
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
-		try {
-			InputStream is = getClass().getClassLoader().getResourceAsStream("paths.xml");
-			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
 			NodeList newPaths = doc.getElementsByTagName("path");
 			for (int i = 0; i < newPaths.getLength(); i++) {
 				Node n = newPaths.item(i);
@@ -82,6 +84,5 @@ public class Game {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return;
 	}
 }
