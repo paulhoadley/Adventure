@@ -36,16 +36,18 @@ public class Game {
 	private void play() {
 		System.out.println("Welcom to " + title + "!");
 		Place current = places.get(start);
-		Scanner scanner = new Scanner(System.in);
-		while (true) {
-			System.out.println(current.description);
-			for (int i = 1; i <= current.paths.size(); i++) {
-				System.out.println(i + ". " + current.paths.get(i - 1).description);
+		try (Scanner scanner = new Scanner(System.in)) {
+			while (true) {
+				System.out.println(current.description);
+				for (int i = 1; i <= current.paths.size(); i++) {
+					System.out.println(i + ". "
+							+ current.paths.get(i - 1).description);
+				}
+				int choice = scanner.nextInt();
+				Path chosenPath = current.paths.get(choice - 1);
+				current = chosenPath.to;
+				System.out.println("---");
 			}
-			int choice = scanner.nextInt();
-			Path chosenPath = current.paths.get(choice - 1);
-			current = chosenPath.to;
-			System.out.println("---");
 		}
 	}
 
