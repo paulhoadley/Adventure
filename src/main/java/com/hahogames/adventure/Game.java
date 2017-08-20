@@ -15,17 +15,40 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Simple text adventure game.
+ * Simple text adventure game. This class provides the entry point for running
+ * the game.
  * 
  * @author paulh
  * @author harry
  */
 public class Game {
+	/**
+	 * {@link Map} of {@code Place} objects keyed on {@code reference} in the
+	 * configuration file
+	 */
 	private Map<String, Place> places = new HashMap<>();
+
+	/**
+	 * Collection of {@code Path} objects
+	 */
 	private List<Path> paths = new ArrayList<>();
+
+	/**
+	 * Game title
+	 */
 	private String title;
+
+	/**
+	 * Reference of starting {@link Place}
+	 */
 	private String start;
 
+	/**
+	 * Main
+	 * 
+	 * @param args
+	 *            arguments
+	 */
 	public static void main(String[] args) {
 		Game game = new Game();
 		game.setup();
@@ -33,6 +56,10 @@ public class Game {
 		return;
 	}
 
+	/**
+	 * Plays the game. Currently this is just an infinite loop, there are no
+	 * exit conditions for play.
+	 */
 	private void play() {
 		System.out.println("Welcom to " + title + "!");
 		Place current = places.get(start);
@@ -51,10 +78,15 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Sets up the game world from a configuration file.
+	 */
 	private void setup() {
 		try {
-			InputStream is = getClass().getClassLoader().getResourceAsStream("game.xml");
-			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+			InputStream is = getClass().getClassLoader().getResourceAsStream(
+					"game.xml");
+			Document doc = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder().parse(is);
 
 			NodeList newTitle = doc.getElementsByTagName("title");
 			title = newTitle.item(0).getTextContent();
@@ -66,8 +98,10 @@ public class Game {
 				Node n = newPlaces.item(i);
 				if (n.getNodeType() == Node.ELEMENT_NODE) {
 					Element e = (Element) n;
-					String ref = e.getElementsByTagName("reference").item(0).getTextContent();
-					String description = e.getElementsByTagName("description").item(0).getTextContent();
+					String ref = e.getElementsByTagName("reference").item(0)
+							.getTextContent();
+					String description = e.getElementsByTagName("description")
+							.item(0).getTextContent();
 					places.put(ref, new Place(description));
 				}
 			}
@@ -77,10 +111,14 @@ public class Game {
 				Node n = newPaths.item(i);
 				if (n.getNodeType() == Node.ELEMENT_NODE) {
 					Element e = (Element) n;
-					String from = e.getElementsByTagName("from").item(0).getTextContent();
-					String to = e.getElementsByTagName("to").item(0).getTextContent();
-					String description = e.getElementsByTagName("description").item(0).getTextContent();
-					paths.add(new Path(places.get(from), places.get(to), description));
+					String from = e.getElementsByTagName("from").item(0)
+							.getTextContent();
+					String to = e.getElementsByTagName("to").item(0)
+							.getTextContent();
+					String description = e.getElementsByTagName("description")
+							.item(0).getTextContent();
+					paths.add(new Path(places.get(from), places.get(to),
+							description));
 				}
 			}
 		} catch (Exception e) {
