@@ -6,10 +6,26 @@
     <place>
       <reference>A</reference>
       <description>You are in a kitchen.</description>
+      <items>
+        <item>
+          <name>knife</name>
+          <description>a sharp, steel knife</description>
+        </item>
+        <item>
+          <name>tin can</name>
+          <description>it looks like it is full of Nutella</description>
+        </item>
+      </items>
     </place>
     <place>
       <reference>B</reference>
       <description>It is very dark up here.</description>
+      <items>
+        <item>
+          <name>a box</name>
+          <description>it looks like there is a spider inside!</description>
+        </item>
+      </items>
     </place>
     <place>
       <reference>C</reference>
