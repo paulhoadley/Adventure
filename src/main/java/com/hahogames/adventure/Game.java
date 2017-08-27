@@ -66,6 +66,14 @@ public class Game {
 		try (Scanner scanner = new Scanner(System.in)) {
 			while (true) {
 				System.out.println(current.description);
+				if (current.items.size() > 0) {
+					System.out.println("You see:");
+					for (Item i : current.items) {
+						System.out.println("* " + i.name() + ": "
+								+ i.description());
+					}
+				}
+				System.out.println();
 				for (int i = 1; i <= current.paths.size(); i++) {
 					System.out.println(i + ". "
 							+ current.paths.get(i - 1).description);
@@ -102,7 +110,21 @@ public class Game {
 							.getTextContent();
 					String description = e.getElementsByTagName("description")
 							.item(0).getTextContent();
-					places.put(ref, new Place(description));
+					Place newPlace = new Place(description);
+					places.put(ref, newPlace);
+					NodeList items = ((Element) n).getElementsByTagName("item");
+					for (int j = 0; j < items.getLength(); j++) {
+						Node m = items.item(j);
+						if (m.getNodeType() == Node.ELEMENT_NODE) {
+							Element f = (Element) m;
+							String name = f.getElementsByTagName("name")
+									.item(0).getTextContent();
+							String itemDescription = f
+									.getElementsByTagName("description")
+									.item(0).getTextContent();
+							newPlace.addItem(new Item(name, itemDescription));
+						}
+					}
 				}
 			}
 
