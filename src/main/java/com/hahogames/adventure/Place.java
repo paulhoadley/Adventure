@@ -20,6 +20,11 @@ public class Place {
 	public List<Path> paths = new ArrayList<>();
 
 	/**
+	 * List of {@link Item}s in this {@code Place}
+	 */
+	public List<Item> items = new ArrayList<>();
+
+	/**
 	 * Constructor
 	 * 
 	 * @param description
@@ -38,6 +43,17 @@ public class Place {
 	 */
 	public void addOutgoingPath(Path path) {
 		paths.add(path);
+		return;
+	}
+
+	/**
+	 * Adds an {@link Item} to this {@code Place}.
+	 * 
+	 * @param item
+	 *            an {@link Item}
+	 */
+	public void addItem(Item item) {
+		items.add(item);
 		return;
 	}
 }
