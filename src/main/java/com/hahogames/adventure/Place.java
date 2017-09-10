@@ -15,7 +15,7 @@ public class Place {
 	public final String description;
 
 	/**
-	 * List of {@link Path}s for which this {@code Place} is an endpoint
+	 * List of {@link Path}s from this {@code Place}
 	 */
 	public List<Path> paths = new ArrayList<>();
 
